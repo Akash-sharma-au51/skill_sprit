@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
-import connectDB from "./db.config.ts";
+import connectDB from "./db.config";
 import userRoutes from "./Routes/userRoutes";
 import dotenv from "dotenv";
 import postRoutes from "./Routes/postRoutes";
