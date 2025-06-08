@@ -3,12 +3,13 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { Request, Response } from "express";
+dotenv.config();
 
 
 const registerUser = async(req: Request, res: Response) => {
     try{
-        const {name, email, password} = req.body;
-    if(!name || !email || !password){
+        const {name, email, password, role} = req.body;
+    if(!name || !email || !password || !role){
         return res.status(400).json({message: "Please fill all fields"});
     }
     const user = await Users.findOne({email});
@@ -17,7 +18,7 @@ const registerUser = async(req: Request, res: Response) => {
     }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    const newUser = await Users.create({name, email, password: hashedPassword});
+    const newUser = await Users.create({name, email, password: hashedPassword, role});
     const token = jwt.sign({id: newUser._id}, process.env.JWT_SECRET!, {expiresIn: "1h"});
     res.status(201).json({
         success: true,
