@@ -1,5 +1,5 @@
-import express from "express";
-import connectDB from "./db.config";
+import express, { Request, Response, NextFunction } from "express";
+import connectDB from "./db.config.ts";
 import userRoutes from "./Routes/userRoutes";
 import dotenv from "dotenv";
 import postRoutes from "./Routes/postRoutes";
@@ -17,12 +17,12 @@ app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 
 // 404 handler
-app.use((req, res) => {
+app.use((req: Request, res: Response) => {
   res.status(404).json({ message: "Route not found" });
 });
 
 // Error handler
-app.use((err, req, res, next) => {
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
   res.status(500).json({ message: "Internal Server Error" });
 });
